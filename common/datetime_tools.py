@@ -25,19 +25,21 @@ def parse(args):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('timestamp', type=float, help='timestamp to format')
+    parser.add_argument('-t', '--timestamp', type=float, help='timestamp to format')
     parser.add_argument('-d', '--datetime', help='date time to format')
     args = parser.parse_args()
 
     args_timestamp = args.timestamp
-    if args_timestamp > 9999999999:
-        args_timestamp = args_timestamp / 1000
 
-    ts = datetime.fromtimestamp(args_timestamp)
     now = datetime.now()
-
     print(colored(format_timestamp_datetime.format(now.strftime(datetime_format), str(now.timestamp())), 'green'))
-    print(colored(format_timestamp_datetime.format(str(args.timestamp), ts.strftime(datetime_format)), 'green'))
+
+    if args_timestamp:
+        if args_timestamp > 9999999999:
+            args_timestamp = args_timestamp / 1000
+        ts = datetime.fromtimestamp(args_timestamp)
+        print(colored(format_timestamp_datetime.format(str(args.timestamp), ts.strftime(datetime_format)), 'green'))
+
     if args.datetime:
         dt = parse(args.datetime)
         if dt:
